@@ -1,50 +1,57 @@
 %{
   #include <stdio.h>
+  #include <string.h>
   #include "parse.tab.h"
-  #define VTYPE(type, value) printf("%s(%s)\n", type, value)
-  #define TYPE(type) printf("%s\n", type)
+  #define TOKEN(id) return t##id
+  #define KEYWORD(id) return k##id
 %}
 
 %option noyywrap
+%option yylineno
 NUMBER [0-9](_[0-9]|[0-9])*
 
 %%
-
-[a-z_][a-zA-Z0-9_]* { VTYPE("ID", yytext); }
-{NUMBER} { yylval = atoi(yytext); return tNUMBER; }
-{NUMBER}(\.{NUMBER}|(\.{NUMBER})?[eE][+-]?{NUMBER}) { VTYPE("FLOAT", yytext); }
-\"([^"]|\\.)*\" { VTYPE("STRING", yytext); }
-\'([^']|\\.)*\' { VTYPE("STRING", yytext); }
-[A-Z][a-zA-Z0-9_]* { VTYPE("CONSTANT", yytext); }
-
-"=" { TYPE("EQUAL"); }
-">" { TYPE("GT"); }
-"<" { TYPE("LT"); }
-">=" { TYPE("GTE"); }
-"<=" { TYPE("LTE"); }
-"!=" { TYPE("NEQUAL"); }
-"+" { return tPLUS; }
-"-" { TYPE("MINUS"); }
-"*" { TYPE("MULT"); }
-"/" { TYPE("DIV"); }
-"%" { TYPE("MOD"); }
-"!" { TYPE("EMARK"); }
-"?" { TYPE("QMARK"); }
-"&" { TYPE("AND"); }
-"|" { TYPE("OR"); }
-"[" { TYPE("LSBRACE"); }
-"]" { TYPE("RSBRACE"); }
-"(" { TYPE("LPAREN"); }
-")" { TYPE("RPAREN"); }
-"{" { TYPE("LBRACE"); }
-"}" { TYPE("RBRACE"); }
-"@" { TYPE("AT"); }
-"." { TYPE("DOT"); }
-"," { TYPE("COMMA"); }
-":" { TYPE("COLON"); }
-
+class { KEYWORD(CLASS); }
+end { KEYWORD(END); }
+def { KEYWORD(DEF); }
 #.*$ {}
-\n {}
+\"([^"]|\\.)*\" { yylval.sval = strdup(yytext); TOKEN(STRING); }
+\'([^']|\\.)*\' { yylval.sval = strdup(yytext); TOKEN(STRING); }
+{NUMBER}(\.{NUMBER}|(\.{NUMBER})?[eE][+-]?{NUMBER}) {
+  yylval.fval = atof(yytext); TOKEN(FLOAT); }
+{NUMBER} { yylval.ival = atoi(yytext); TOKEN(NUMBER); }
+[a-z_][a-zA-Z0-9_]* { yylval.sval = strdup(yytext); TOKEN(ID); }
+[A-Z][a-zA-Z0-9_]* { yylval.sval = strdup(yytext); TOKEN(CONSTANT); }
+"=" { TOKEN(EQUAL); }
+">" { TOKEN(GT); }
+"<" { TOKEN(LT); }
+">=" { TOKEN(GTE); }
+"<=" { TOKEN(LTE); }
+"!=" { TOKEN(NEQUAL); }
+"+" { TOKEN(PLUS); }
+"-" { TOKEN(MINUS); }
+"*" { TOKEN(MULT); }
+"/" { TOKEN(DIV); }
+"%" { TOKEN(MOD); }
+"!" { TOKEN(EMARK); }
+"?" { TOKEN(QMARK); }
+"&" { TOKEN(AND); }
+"|" { TOKEN(OR); }
+"[" { TOKEN(LSBRACE); }
+"]" { TOKEN(RSBRACE); }
+"(" { TOKEN(LPAREN); }
+")" { TOKEN(RPAREN); }
+"{" { TOKEN(LBRACE); }
+"}" { TOKEN(RBRACE); }
+"@" { TOKEN(AT); }
+"." { TOKEN(DOT); }
+"," { TOKEN(COMMA); }
+":" { TOKEN(COLON); }
 [\t ] {}
-
+\n {}
 . { fprintf(stderr, "Unknown token '%s'\n", yytext); }
+%%
+
+void yyerror(char const *s) {
+  fprintf(stderr, "%s. Unexpected \"%s\" on line %d\n", s, yytext, yylineno);
+}

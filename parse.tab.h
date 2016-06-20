@@ -39,19 +39,90 @@
    /* Put the tokens into the symbol table, so that GDB and other debuggers
       know about them.  */
    enum yytokentype {
-     tNUMBER = 258,
-     tPLUS = 259
+     tSTRING = 258,
+     tFLOAT = 259,
+     tNUMBER = 260,
+     tID = 261,
+     tCONSTANT = 262,
+     tEQUAL = 263,
+     tGT = 264,
+     tLT = 265,
+     tGTE = 266,
+     tLTE = 267,
+     tNEQUAL = 268,
+     tPLUS = 269,
+     tMINUS = 270,
+     tMULT = 271,
+     tDIV = 272,
+     tMOD = 273,
+     tEMARK = 274,
+     tQMARK = 275,
+     tAND = 276,
+     tOR = 277,
+     tLSBRACE = 278,
+     tRSBRACE = 279,
+     tLPAREN = 280,
+     tRPAREN = 281,
+     tLBRACE = 282,
+     tRBRACE = 283,
+     tAT = 284,
+     tDOT = 285,
+     tCOMMA = 286,
+     tCOLON = 287,
+     kCLASS = 288,
+     kEND = 289,
+     kDEF = 290
    };
 #endif
 /* Tokens.  */
-#define tNUMBER 258
-#define tPLUS 259
+#define tSTRING 258
+#define tFLOAT 259
+#define tNUMBER 260
+#define tID 261
+#define tCONSTANT 262
+#define tEQUAL 263
+#define tGT 264
+#define tLT 265
+#define tGTE 266
+#define tLTE 267
+#define tNEQUAL 268
+#define tPLUS 269
+#define tMINUS 270
+#define tMULT 271
+#define tDIV 272
+#define tMOD 273
+#define tEMARK 274
+#define tQMARK 275
+#define tAND 276
+#define tOR 277
+#define tLSBRACE 278
+#define tRSBRACE 279
+#define tLPAREN 280
+#define tRPAREN 281
+#define tLBRACE 282
+#define tRBRACE 283
+#define tAT 284
+#define tDOT 285
+#define tCOMMA 286
+#define tCOLON 287
+#define kCLASS 288
+#define kEND 289
+#define kDEF 290
 
 
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+typedef union YYSTYPE
+#line 12 "parse.y"
+{
+  int ival;
+  float fval;
+  char *sval;
+}
+/* Line 1529 of yacc.c.  */
+#line 125 "parse.tab.h"
+	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
 # define YYSTYPE_IS_TRIVIAL 1
