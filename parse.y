@@ -1,7 +1,21 @@
 %{
+  #include "node.h"
   #include <stdio.h>
-  extern int yylex(void);
-  extern void yyerror(char const *s);
+  extern void yyerror(struct parser_state *state, char const *s);
+%}
+
+%pure-parser
+%parse-param { parser_state *state }
+%lex-param { state }
+
+%union {
+  int ival;
+  float fval;
+  char *sval;
+}
+
+%{
+  extern int yylex(YYSTYPE *yylval, parser_state *state);
 %}
 
 %token  tSTRING tFLOAT tNUMBER tID tCONSTANT tEQUAL tGT tLT tGTE tLTE
@@ -9,18 +23,15 @@
 %token  tLSBRACE tRSBRACE tLPAREN tRPAREN tLBRACE tRBRACE tAT tDOT 
 %token  tCOMMA tCOLON
 %token  kCLASS kEND kDEF
-%union {
-  int ival;
-  float fval;
-  char *sval;
-}
+
 %left   tPLUS
 %right  tEQUAL
+
 %start  program
 
 %%
 
-program: expressions
+program: expressions { printf("%s\n", state->source_file); }
 
 expressions: expressions expression
            | expression

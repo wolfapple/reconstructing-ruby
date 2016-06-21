@@ -1,0 +1,597 @@
+Terminals which are not used
+
+   tFLOAT
+   tGT
+   tLT
+   tGTE
+   tLTE
+   tNEQUAL
+   tMINUS
+   tMULT
+   tDIV
+   tMOD
+   tEMARK
+   tQMARK
+   tAND
+   tOR
+   tLSBRACE
+   tRSBRACE
+   tLBRACE
+   tRBRACE
+   tCOMMA
+   tCOLON
+
+
+Grammar
+
+    0 $accept: program $end
+
+    1 program: expressions
+
+    2 expressions: expressions expression
+    3            | expression
+
+    4 expression: class_definition
+    5           | binary_expression
+    6           | method_definition
+    7           | variable
+    8           | assignment
+    9           | method_call
+   10           | value
+
+   11 binary_expression: expression tPLUS expression
+
+   12 assignment: variable tEQUAL expression
+
+   13 class_definition: kCLASS tCONSTANT expressions kEND
+
+   14 method_definition: kDEF tID expressions kEND
+   15                  | kDEF tID tLPAREN tID tRPAREN expressions kEND
+
+   16 method_call: variable tDOT tID
+   17            | tCONSTANT tDOT tID tLPAREN tSTRING tRPAREN
+   18            | tID tSTRING
+
+   19 variable: tID
+   20         | tAT tID
+
+   21 value: tNUMBER
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+tSTRING (258) 17 18
+tFLOAT (259)
+tNUMBER (260) 21
+tID (261) 14 15 16 17 18 19 20
+tCONSTANT (262) 13 17
+tEQUAL (263) 12
+tGT (264)
+tLT (265)
+tGTE (266)
+tLTE (267)
+tNEQUAL (268)
+tPLUS (269) 11
+tMINUS (270)
+tMULT (271)
+tDIV (272)
+tMOD (273)
+tEMARK (274)
+tQMARK (275)
+tAND (276)
+tOR (277)
+tLSBRACE (278)
+tRSBRACE (279)
+tLPAREN (280) 15 17
+tRPAREN (281) 15 17
+tLBRACE (282)
+tRBRACE (283)
+tAT (284) 20
+tDOT (285) 16 17
+tCOMMA (286)
+tCOLON (287)
+kCLASS (288) 13
+kEND (289) 13 14 15
+kDEF (290) 14 15
+
+
+Nonterminals, with rules where they appear
+
+$accept (36)
+    on left: 0
+program (37)
+    on left: 1, on right: 0
+expressions (38)
+    on left: 2 3, on right: 1 2 13 14 15
+expression (39)
+    on left: 4 5 6 7 8 9 10, on right: 2 3 11 12
+binary_expression (40)
+    on left: 11, on right: 5
+assignment (41)
+    on left: 12, on right: 8
+class_definition (42)
+    on left: 13, on right: 4
+method_definition (43)
+    on left: 14 15, on right: 6
+method_call (44)
+    on left: 16 17 18, on right: 9
+variable (45)
+    on left: 19 20, on right: 7 12 16
+value (46)
+    on left: 21, on right: 10
+
+
+state 0
+
+    0 $accept: . program $end
+
+    tNUMBER    shift, and go to state 1
+    tID        shift, and go to state 2
+    tCONSTANT  shift, and go to state 3
+    tAT        shift, and go to state 4
+    kCLASS     shift, and go to state 5
+    kDEF       shift, and go to state 6
+
+    program            go to state 7
+    expressions        go to state 8
+    expression         go to state 9
+    binary_expression  go to state 10
+    assignment         go to state 11
+    class_definition   go to state 12
+    method_definition  go to state 13
+    method_call        go to state 14
+    variable           go to state 15
+    value              go to state 16
+
+
+state 1
+
+   21 value: tNUMBER .
+
+    $default  reduce using rule 21 (value)
+
+
+state 2
+
+   18 method_call: tID . tSTRING
+   19 variable: tID .
+
+    tSTRING  shift, and go to state 17
+
+    $default  reduce using rule 19 (variable)
+
+
+state 3
+
+   17 method_call: tCONSTANT . tDOT tID tLPAREN tSTRING tRPAREN
+
+    tDOT  shift, and go to state 18
+
+
+state 4
+
+   20 variable: tAT . tID
+
+    tID  shift, and go to state 19
+
+
+state 5
+
+   13 class_definition: kCLASS . tCONSTANT expressions kEND
+
+    tCONSTANT  shift, and go to state 20
+
+
+state 6
+
+   14 method_definition: kDEF . tID expressions kEND
+   15                  | kDEF . tID tLPAREN tID tRPAREN expressions kEND
+
+    tID  shift, and go to state 21
+
+
+state 7
+
+    0 $accept: program . $end
+
+    $end  shift, and go to state 22
+
+
+state 8
+
+    1 program: expressions .
+    2 expressions: expressions . expression
+
+    tNUMBER    shift, and go to state 1
+    tID        shift, and go to state 2
+    tCONSTANT  shift, and go to state 3
+    tAT        shift, and go to state 4
+    kCLASS     shift, and go to state 5
+    kDEF       shift, and go to state 6
+
+    $default  reduce using rule 1 (program)
+
+    expression         go to state 23
+    binary_expression  go to state 10
+    assignment         go to state 11
+    class_definition   go to state 12
+    method_definition  go to state 13
+    method_call        go to state 14
+    variable           go to state 15
+    value              go to state 16
+
+
+state 9
+
+    3 expressions: expression .
+   11 binary_expression: expression . tPLUS expression
+
+    tPLUS  shift, and go to state 24
+
+    $default  reduce using rule 3 (expressions)
+
+
+state 10
+
+    5 expression: binary_expression .
+
+    $default  reduce using rule 5 (expression)
+
+
+state 11
+
+    8 expression: assignment .
+
+    $default  reduce using rule 8 (expression)
+
+
+state 12
+
+    4 expression: class_definition .
+
+    $default  reduce using rule 4 (expression)
+
+
+state 13
+
+    6 expression: method_definition .
+
+    $default  reduce using rule 6 (expression)
+
+
+state 14
+
+    9 expression: method_call .
+
+    $default  reduce using rule 9 (expression)
+
+
+state 15
+
+    7 expression: variable .
+   12 assignment: variable . tEQUAL expression
+   16 method_call: variable . tDOT tID
+
+    tEQUAL  shift, and go to state 25
+    tDOT    shift, and go to state 26
+
+    $default  reduce using rule 7 (expression)
+
+
+state 16
+
+   10 expression: value .
+
+    $default  reduce using rule 10 (expression)
+
+
+state 17
+
+   18 method_call: tID tSTRING .
+
+    $default  reduce using rule 18 (method_call)
+
+
+state 18
+
+   17 method_call: tCONSTANT tDOT . tID tLPAREN tSTRING tRPAREN
+
+    tID  shift, and go to state 27
+
+
+state 19
+
+   20 variable: tAT tID .
+
+    $default  reduce using rule 20 (variable)
+
+
+state 20
+
+   13 class_definition: kCLASS tCONSTANT . expressions kEND
+
+    tNUMBER    shift, and go to state 1
+    tID        shift, and go to state 2
+    tCONSTANT  shift, and go to state 3
+    tAT        shift, and go to state 4
+    kCLASS     shift, and go to state 5
+    kDEF       shift, and go to state 6
+
+    expressions        go to state 28
+    expression         go to state 9
+    binary_expression  go to state 10
+    assignment         go to state 11
+    class_definition   go to state 12
+    method_definition  go to state 13
+    method_call        go to state 14
+    variable           go to state 15
+    value              go to state 16
+
+
+state 21
+
+   14 method_definition: kDEF tID . expressions kEND
+   15                  | kDEF tID . tLPAREN tID tRPAREN expressions kEND
+
+    tNUMBER    shift, and go to state 1
+    tID        shift, and go to state 2
+    tCONSTANT  shift, and go to state 3
+    tLPAREN    shift, and go to state 29
+    tAT        shift, and go to state 4
+    kCLASS     shift, and go to state 5
+    kDEF       shift, and go to state 6
+
+    expressions        go to state 30
+    expression         go to state 9
+    binary_expression  go to state 10
+    assignment         go to state 11
+    class_definition   go to state 12
+    method_definition  go to state 13
+    method_call        go to state 14
+    variable           go to state 15
+    value              go to state 16
+
+
+state 22
+
+    0 $accept: program $end .
+
+    $default  accept
+
+
+state 23
+
+    2 expressions: expressions expression .
+   11 binary_expression: expression . tPLUS expression
+
+    tPLUS  shift, and go to state 24
+
+    $default  reduce using rule 2 (expressions)
+
+
+state 24
+
+   11 binary_expression: expression tPLUS . expression
+
+    tNUMBER    shift, and go to state 1
+    tID        shift, and go to state 2
+    tCONSTANT  shift, and go to state 3
+    tAT        shift, and go to state 4
+    kCLASS     shift, and go to state 5
+    kDEF       shift, and go to state 6
+
+    expression         go to state 31
+    binary_expression  go to state 10
+    assignment         go to state 11
+    class_definition   go to state 12
+    method_definition  go to state 13
+    method_call        go to state 14
+    variable           go to state 15
+    value              go to state 16
+
+
+state 25
+
+   12 assignment: variable tEQUAL . expression
+
+    tNUMBER    shift, and go to state 1
+    tID        shift, and go to state 2
+    tCONSTANT  shift, and go to state 3
+    tAT        shift, and go to state 4
+    kCLASS     shift, and go to state 5
+    kDEF       shift, and go to state 6
+
+    expression         go to state 32
+    binary_expression  go to state 10
+    assignment         go to state 11
+    class_definition   go to state 12
+    method_definition  go to state 13
+    method_call        go to state 14
+    variable           go to state 15
+    value              go to state 16
+
+
+state 26
+
+   16 method_call: variable tDOT . tID
+
+    tID  shift, and go to state 33
+
+
+state 27
+
+   17 method_call: tCONSTANT tDOT tID . tLPAREN tSTRING tRPAREN
+
+    tLPAREN  shift, and go to state 34
+
+
+state 28
+
+    2 expressions: expressions . expression
+   13 class_definition: kCLASS tCONSTANT expressions . kEND
+
+    tNUMBER    shift, and go to state 1
+    tID        shift, and go to state 2
+    tCONSTANT  shift, and go to state 3
+    tAT        shift, and go to state 4
+    kCLASS     shift, and go to state 5
+    kEND       shift, and go to state 35
+    kDEF       shift, and go to state 6
+
+    expression         go to state 23
+    binary_expression  go to state 10
+    assignment         go to state 11
+    class_definition   go to state 12
+    method_definition  go to state 13
+    method_call        go to state 14
+    variable           go to state 15
+    value              go to state 16
+
+
+state 29
+
+   15 method_definition: kDEF tID tLPAREN . tID tRPAREN expressions kEND
+
+    tID  shift, and go to state 36
+
+
+state 30
+
+    2 expressions: expressions . expression
+   14 method_definition: kDEF tID expressions . kEND
+
+    tNUMBER    shift, and go to state 1
+    tID        shift, and go to state 2
+    tCONSTANT  shift, and go to state 3
+    tAT        shift, and go to state 4
+    kCLASS     shift, and go to state 5
+    kEND       shift, and go to state 37
+    kDEF       shift, and go to state 6
+
+    expression         go to state 23
+    binary_expression  go to state 10
+    assignment         go to state 11
+    class_definition   go to state 12
+    method_definition  go to state 13
+    method_call        go to state 14
+    variable           go to state 15
+    value              go to state 16
+
+
+state 31
+
+   11 binary_expression: expression . tPLUS expression
+   11                  | expression tPLUS expression .
+
+    $default  reduce using rule 11 (binary_expression)
+
+
+state 32
+
+   11 binary_expression: expression . tPLUS expression
+   12 assignment: variable tEQUAL expression .
+
+    $default  reduce using rule 12 (assignment)
+
+
+state 33
+
+   16 method_call: variable tDOT tID .
+
+    $default  reduce using rule 16 (method_call)
+
+
+state 34
+
+   17 method_call: tCONSTANT tDOT tID tLPAREN . tSTRING tRPAREN
+
+    tSTRING  shift, and go to state 38
+
+
+state 35
+
+   13 class_definition: kCLASS tCONSTANT expressions kEND .
+
+    $default  reduce using rule 13 (class_definition)
+
+
+state 36
+
+   15 method_definition: kDEF tID tLPAREN tID . tRPAREN expressions kEND
+
+    tRPAREN  shift, and go to state 39
+
+
+state 37
+
+   14 method_definition: kDEF tID expressions kEND .
+
+    $default  reduce using rule 14 (method_definition)
+
+
+state 38
+
+   17 method_call: tCONSTANT tDOT tID tLPAREN tSTRING . tRPAREN
+
+    tRPAREN  shift, and go to state 40
+
+
+state 39
+
+   15 method_definition: kDEF tID tLPAREN tID tRPAREN . expressions kEND
+
+    tNUMBER    shift, and go to state 1
+    tID        shift, and go to state 2
+    tCONSTANT  shift, and go to state 3
+    tAT        shift, and go to state 4
+    kCLASS     shift, and go to state 5
+    kDEF       shift, and go to state 6
+
+    expressions        go to state 41
+    expression         go to state 9
+    binary_expression  go to state 10
+    assignment         go to state 11
+    class_definition   go to state 12
+    method_definition  go to state 13
+    method_call        go to state 14
+    variable           go to state 15
+    value              go to state 16
+
+
+state 40
+
+   17 method_call: tCONSTANT tDOT tID tLPAREN tSTRING tRPAREN .
+
+    $default  reduce using rule 17 (method_call)
+
+
+state 41
+
+    2 expressions: expressions . expression
+   15 method_definition: kDEF tID tLPAREN tID tRPAREN expressions . kEND
+
+    tNUMBER    shift, and go to state 1
+    tID        shift, and go to state 2
+    tCONSTANT  shift, and go to state 3
+    tAT        shift, and go to state 4
+    kCLASS     shift, and go to state 5
+    kEND       shift, and go to state 42
+    kDEF       shift, and go to state 6
+
+    expression         go to state 23
+    binary_expression  go to state 10
+    assignment         go to state 11
+    class_definition   go to state 12
+    method_definition  go to state 13
+    method_call        go to state 14
+    variable           go to state 15
+    value              go to state 16
+
+
+state 42
+
+   15 method_definition: kDEF tID tLPAREN tID tRPAREN expressions kEND .
+
+    $default  reduce using rule 15 (method_definition)

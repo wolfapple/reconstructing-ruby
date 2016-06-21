@@ -533,10 +533,12 @@ char *yytext;
 #line 2 "ruby.l"
   #include <stdio.h>
   #include <string.h>
+  #include "node.h"
   #include "parse.tab.h"
+  #define YY_DECL int yylex(YYSTYPE *yylval,parser_state *state)
   #define TOKEN(id) return t##id
   #define KEYWORD(id) return k##id
-#line 540 "lex.yy.c"
+#line 542 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -718,9 +720,9 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 13 "ruby.l"
+#line 16 "ruby.l"
 
-#line 724 "lex.yy.c"
+#line 726 "lex.yy.c"
 
 	if ( !(yy_init) )
 		{
@@ -815,17 +817,17 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 14 "ruby.l"
+#line 17 "ruby.l"
 { KEYWORD(CLASS); }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 15 "ruby.l"
+#line 18 "ruby.l"
 { KEYWORD(END); }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 16 "ruby.l"
+#line 19 "ruby.l"
 { KEYWORD(DEF); }
 	YY_BREAK
 case 4:
@@ -833,189 +835,189 @@ case 4:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 17 "ruby.l"
+#line 20 "ruby.l"
 {}
 	YY_BREAK
 case 5:
 /* rule 5 can match eol */
 YY_RULE_SETUP
-#line 18 "ruby.l"
-{ yylval.sval = strdup(yytext); TOKEN(STRING); }
+#line 21 "ruby.l"
+{ yylval->sval = strdup(yytext); TOKEN(STRING); }
 	YY_BREAK
 case 6:
 /* rule 6 can match eol */
 YY_RULE_SETUP
-#line 19 "ruby.l"
-{ yylval.sval = strdup(yytext); TOKEN(STRING); }
+#line 22 "ruby.l"
+{ yylval->sval = strdup(yytext); TOKEN(STRING); }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 20 "ruby.l"
+#line 23 "ruby.l"
 {
-  yylval.fval = atof(yytext); TOKEN(FLOAT); }
+  yylval->fval = atof(yytext); TOKEN(FLOAT); }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 22 "ruby.l"
-{ yylval.ival = atoi(yytext); TOKEN(NUMBER); }
+#line 25 "ruby.l"
+{ yylval->ival = atoi(yytext); TOKEN(NUMBER); }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 23 "ruby.l"
-{ yylval.sval = strdup(yytext); TOKEN(ID); }
+#line 26 "ruby.l"
+{ yylval->sval = strdup(yytext); TOKEN(ID); }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 24 "ruby.l"
-{ yylval.sval = strdup(yytext); TOKEN(CONSTANT); }
+#line 27 "ruby.l"
+{ yylval->sval = strdup(yytext); TOKEN(CONSTANT); }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 25 "ruby.l"
+#line 28 "ruby.l"
 { TOKEN(EQUAL); }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 26 "ruby.l"
+#line 29 "ruby.l"
 { TOKEN(GT); }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 27 "ruby.l"
+#line 30 "ruby.l"
 { TOKEN(LT); }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 28 "ruby.l"
+#line 31 "ruby.l"
 { TOKEN(GTE); }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 29 "ruby.l"
+#line 32 "ruby.l"
 { TOKEN(LTE); }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 30 "ruby.l"
+#line 33 "ruby.l"
 { TOKEN(NEQUAL); }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 31 "ruby.l"
+#line 34 "ruby.l"
 { TOKEN(PLUS); }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 32 "ruby.l"
+#line 35 "ruby.l"
 { TOKEN(MINUS); }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 33 "ruby.l"
+#line 36 "ruby.l"
 { TOKEN(MULT); }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 34 "ruby.l"
+#line 37 "ruby.l"
 { TOKEN(DIV); }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 35 "ruby.l"
+#line 38 "ruby.l"
 { TOKEN(MOD); }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 36 "ruby.l"
+#line 39 "ruby.l"
 { TOKEN(EMARK); }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 37 "ruby.l"
+#line 40 "ruby.l"
 { TOKEN(QMARK); }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 38 "ruby.l"
+#line 41 "ruby.l"
 { TOKEN(AND); }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 39 "ruby.l"
+#line 42 "ruby.l"
 { TOKEN(OR); }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 40 "ruby.l"
+#line 43 "ruby.l"
 { TOKEN(LSBRACE); }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 41 "ruby.l"
+#line 44 "ruby.l"
 { TOKEN(RSBRACE); }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 42 "ruby.l"
+#line 45 "ruby.l"
 { TOKEN(LPAREN); }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 43 "ruby.l"
+#line 46 "ruby.l"
 { TOKEN(RPAREN); }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 44 "ruby.l"
+#line 47 "ruby.l"
 { TOKEN(LBRACE); }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 45 "ruby.l"
+#line 48 "ruby.l"
 { TOKEN(RBRACE); }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 46 "ruby.l"
+#line 49 "ruby.l"
 { TOKEN(AT); }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 47 "ruby.l"
+#line 50 "ruby.l"
 { TOKEN(DOT); }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 48 "ruby.l"
+#line 51 "ruby.l"
 { TOKEN(COMMA); }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 49 "ruby.l"
+#line 52 "ruby.l"
 { TOKEN(COLON); }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 50 "ruby.l"
+#line 53 "ruby.l"
 {}
 	YY_BREAK
 case 37:
 /* rule 37 can match eol */
 YY_RULE_SETUP
-#line 51 "ruby.l"
+#line 54 "ruby.l"
 {}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 52 "ruby.l"
+#line 55 "ruby.l"
 { fprintf(stderr, "Unknown token '%s'\n", yytext); }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 53 "ruby.l"
+#line 56 "ruby.l"
 ECHO;
 	YY_BREAK
-#line 1019 "lex.yy.c"
+#line 1021 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2024,7 +2026,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 53 "ruby.l"
+#line 56 "ruby.l"
 
 
 
